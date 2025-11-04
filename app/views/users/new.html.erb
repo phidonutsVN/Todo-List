@@ -1,0 +1,185 @@
+<div class="signup-container">
+  <div class="signup-form">
+    <h2>Đăng ký tài khoản</h2>
+    
+    <%= form_with model: @user, local: true, class: "form" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="error-messages">
+          <h3>Có lỗi xảy ra:</h3>
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="form-group">
+        <%= form.label :first_name, "Tên:", class: "form-label" %>
+        <%= form.text_field :first_name, class: "form-input", required: true, placeholder: "Nhập tên của bạn" %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :last_name, "Họ:", class: "form-label" %>
+        <%= form.text_field :last_name, class: "form-input", required: true, placeholder: "Nhập họ của bạn" %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :email, "Email:", class: "form-label" %>
+        <%= form.email_field :email, class: "form-input", required: true, placeholder: "Nhập email của bạn" %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :password, "Mật khẩu:", class: "form-label" %>
+        <%= form.password_field :password, class: "form-input", required: true, placeholder: "Nhập mật khẩu (tối thiểu 6 ký tự)" %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :password_confirmation, "Xác nhận mật khẩu:", class: "form-label" %>
+        <%= form.password_field :password_confirmation, class: "form-input", required: true, placeholder: "Nhập lại mật khẩu" %>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Đăng ký", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    
+    <div class="signup-links">
+      <p>Đã có tài khoản? <%= link_to "Đăng nhập ngay", login_path, class: "link" %></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+  }
+  
+  .signup-form {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .signup-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;
+  }
+  
+  .error-messages {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .error-messages h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+  }
+  
+  .error-messages ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  .error-messages li {
+    margin-bottom: 5px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .form-input:invalid {
+    border-color: #dc3545;
+  }
+  
+  .form-actions {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #218838;
+  }
+  
+  .signup-links {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  .alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .notice {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+  }
+</style>

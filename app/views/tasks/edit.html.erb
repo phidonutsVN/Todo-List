@@ -1,0 +1,246 @@
+<% content_for :title, "Sửa tác vụ" %>
+
+<div class="task-form-container">
+  <div class="form-header">
+    <h1>Sửa tác vụ: <%= @task.title %></h1>
+    <div class="form-actions-header">
+      <%= link_to "Xem", task_path(@task), class: "btn btn-outline" %>
+      <%= link_to "← Quay lại danh sách", tasks_path, class: "btn btn-outline" %>
+    </div>
+  </div>
+
+  <%= form_with model: @task, local: true, class: "task-form" do |form| %>
+    <% if @task.errors.any? %>
+      <div class="error-messages">
+        <h3>Có lỗi xảy ra:</h3>
+        <ul>
+          <% @task.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :title, "Tiêu đề *", class: "form-label" %>
+      <%= form.text_field :title, class: "form-input", placeholder: "Nhập tiêu đề tác vụ" %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description, "Mô tả", class: "form-label" %>
+      <%= form.text_area :description, class: "form-textarea", placeholder: "Nhập mô tả chi tiết cho tác vụ (tùy chọn)", rows: 4 %>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <%= form.label :due_date, "Hạn chót *", class: "form-label" %>
+        <%= form.datetime_local_field :due_date, class: "form-input" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :category_id, "Danh mục", class: "form-label" %>
+        <%= form.select :category_id, 
+            options_from_collection_for_select(@categories, :id, :name, @task.category_id),
+            { prompt: "Chọn danh mục (tùy chọn)" }, 
+            { class: "form-select" } %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :status, "Trạng thái", class: "form-label" %>
+      <%= form.select :status, 
+          options_for_select([
+            ['Chưa bắt đầu', 'pending'],
+            ['Đang thực hiện', 'in_progress'],
+            ['Hoàn thành', 'completed']
+          ], @task.status), 
+          {}, 
+          { class: "form-select" } %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :tag_names, "Thẻ (Tags)", class: "form-label" %>
+      <%= form.text_field :tag_names, 
+          value: @task.tags.pluck(:name).join(', '),
+          class: "form-input", 
+          placeholder: "Nhập các thẻ cách nhau bởi dấu phẩy (ví dụ: quan trọng, khẩn cấp)" %>
+      <small class="form-help">Các thẻ giúp bạn phân loại và tìm kiếm tác vụ dễ dàng hơn</small>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Cập nhật tác vụ", class: "btn btn-primary btn-large" %>
+      <%= link_to "Hủy", task_path(@task), class: "btn btn-outline btn-large" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .task-form-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .form-header h1 {
+    color: #333;
+    margin: 0;
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .form-actions-header {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+  }
+  
+  .btn-outline:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-large {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+  
+  .task-form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+  
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .form-help {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.875rem;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .error-messages {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .error-messages h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+  }
+  
+  .error-messages ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  .error-messages li {
+    margin-bottom: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+    }
+    
+    .form-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    
+    .form-actions-header {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+</style>

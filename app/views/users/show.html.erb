@@ -1,0 +1,187 @@
+<div class="user-profile">
+  <div class="profile-header">
+    <h1>Thông tin cá nhân</h1>
+    <div class="profile-actions">
+      <%= link_to "Chỉnh sửa", edit_user_path(@user), class: "btn btn-secondary" %>
+      <%= link_to "Về trang chủ", root_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+  
+  <div class="profile-content">
+    <div class="profile-info">
+      <div class="info-item">
+        <label>Tên đầy đủ:</label>
+        <span><%= @user.first_name %> <%= @user.last_name %></span>
+      </div>
+      
+      <div class="info-item">
+        <label>Email:</label>
+        <span><%= @user.email %></span>
+      </div>
+      
+      <div class="info-item">
+        <label>Ngày tạo tài khoản:</label>
+        <span><%= @user.created_at.strftime("%d/%m/%Y lúc %H:%M") %></span>
+      </div>
+    </div>
+    
+    <div class="profile-stats">
+      <h3>Thống kê</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-number"><%= @user.tasks.count %></span>
+          <span class="stat-label">Công việc</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number"><%= @user.categories.count %></span>
+          <span class="stat-label">Danh mục</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .user-profile {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .profile-header h1 {
+    color: #333;
+    margin: 0;
+  }
+  
+  .profile-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .profile-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  .profile-info {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .info-item:last-child {
+    border-bottom: none;
+  }
+  
+  .info-item label {
+    font-weight: 600;
+    color: #555;
+    min-width: 150px;
+  }
+  
+  .info-item span {
+    color: #333;
+  }
+  
+  .profile-stats {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-stats h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .stat-number {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+  }
+  
+  .stat-label {
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #545b62;
+  }
+  
+  @media (max-width: 768px) {
+    .profile-content {
+      grid-template-columns: 1fr;
+    }
+    
+    .profile-header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+    }
+    
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

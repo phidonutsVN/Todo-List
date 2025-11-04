@@ -1,0 +1,245 @@
+<% content_for :title, "Danh sách tác vụ" %>
+
+<div class="tasks-container">
+  <div class="tasks-header">
+    <h1>Danh sách tác vụ</h1>
+    <%= link_to "Tạo tác vụ mới", new_task_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @tasks.any? %>
+    <div class="tasks-grid">
+      <% @tasks.each do |task| %>
+        <div class="task-card">
+          <div class="task-header">
+            <h3 class="task-title"><%= task.title %></h3>
+            <div class="task-actions">
+              <%= link_to "Xem", task_path(task), class: "btn btn-sm btn-outline" %>
+              <%= link_to "Sửa", edit_task_path(task), class: "btn btn-sm btn-outline" %>
+              <%= link_to "Xóa", task_path(task), method: :delete, 
+                          data: { confirm: "Bạn có chắc chắn muốn xóa tác vụ này?" }, 
+                          class: "btn btn-sm btn-danger" %>
+            </div>
+          </div>
+          
+          <% if task.description.present? %>
+            <p class="task-description"><%= task.description %></p>
+          <% end %>
+          
+          <div class="task-meta">
+            <div class="task-info">
+              <span class="task-due-date">
+                <strong>Hạn chót:</strong> 
+                <%= task.due_date.strftime("%d/%m/%Y %H:%M") %>
+              </span>
+              
+              <% if task.category.present? %>
+                <span class="task-category">
+                  <strong>Danh mục:</strong> <%= task.category.name %>
+                </span>
+              <% end %>
+              
+              <span class="task-status status-<%= task.status %>">
+                <strong>Trạng thái:</strong> 
+                <%= case task.status
+                    when 'pending' then "Chưa bắt đầu"
+                    when 'in_progress' then "Đang thực hiện"
+                    when 'completed' then "Hoàn thành"
+                    else "Không xác định"
+                    end %>
+              </span>
+            </div>
+            
+            <% if task.tags.any? %>
+              <div class="task-tags">
+                <% task.tags.each do |tag| %>
+                  <span class="tag"><%= tag.name %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <h3>Chưa có tác vụ nào</h3>
+      <p>Hãy tạo tác vụ đầu tiên của bạn!</p>
+      <%= link_to "Tạo tác vụ mới", new_task_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .tasks-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .tasks-header h1 {
+    color: #333;
+    margin: 0;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+  }
+  
+  .btn-outline:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c82333;
+  }
+  
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+  }
+  
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+  }
+  
+  .task-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+  }
+  
+  .task-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .task-title {
+    margin: 0;
+    color: #333;
+    font-size: 1.25rem;
+    flex: 1;
+    margin-right: 15px;
+  }
+  
+  .task-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  
+  .task-description {
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  
+  .task-meta {
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+  }
+  
+  .task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .task-info span {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .task-status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-pending {
+    background-color: #f8f9fa;
+    color: #6c757d;
+  }
+  
+  .status-in_progress {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .status-completed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .task-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .tag {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+  }
+  
+  .empty-state h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+</style>

@@ -23,6 +23,106 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <%= link_to "Todo List", root_path, class: "nav-link" %>
+        </div>
+        
+        <div class="nav-menu">
+          <% if logged_in? %>
+            <%= link_to "Tác vụ", tasks_path, class: "nav-link" %>
+            <span class="nav-item">Xin chào, <%= current_user.first_name %>!</span>
+            <%= link_to "Đăng xuất", logout_path, method: :delete, class: "nav-link" %>
+          <% else %>
+            <%= link_to "Đăng nhập", login_path, class: "nav-link" %>
+            <%= link_to "Đăng ký", new_user_path, class: "nav-link" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <% if notice %>
+        <div class="alert notice"><%= notice %></div>
+      <% end %>
+      
+      <% if alert %>
+        <div class="alert alert-danger"><%= alert %></div>
+      <% end %>
+      
+      <%= yield %>
+    </main>
+
+    <style>
+      .navbar {
+        background-color: #007bff;
+        padding: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .nav-brand .nav-link {
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      
+      .nav-menu {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      
+      .nav-link {
+        color: white;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      
+      .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-item {
+        color: white;
+        padding: 8px 16px;
+      }
+      
+      .main-content {
+        min-height: calc(100vh - 80px);
+        padding: 20px;
+      }
+      
+      .alert {
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+      }
+      
+      .notice {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+      }
+      
+      .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+      }
+    </style>
   </body>
 </html>
